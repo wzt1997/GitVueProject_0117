@@ -20,7 +20,7 @@
         </div>
         <!-- 侧边栏菜单区域 -->
         <!-- 直接写unique-open或者:unique-open="true" -->
-        <el-menu background-color="#333744" text-color="#fff" active-text-color="#409EFF" :unique-opened="true" :collapse="iscollapse" :collapse-transition="false"> 
+        <el-menu background-color="#333744" text-color="#fff" active-text-color="#409EFF" :unique-opened="true" :collapse="iscollapse" :collapse-transition="false" :router="true" :default-active="activePath"> 
           <!-- 一级菜单 -->
           <el-submenu :index="item.id+''" v-for="item in menuList" :key="item.id">
             <!-- 一级菜单模板区 -->
@@ -30,7 +30,7 @@
             </template>
 
             <!-- 二级菜单 -->
-            <el-menu-item :index="subItem.id+''" v-for="subItem in item.children" :key="subItem.id">
+            <el-menu-item :index="'/'+subItem.path" v-for="subItem in item.children" :key="subItem.id" @click="saveNavState('/'+subItem.path)">
               <template slot="title">
                 <i class="el-icon-menu"></i>
                 <span>{{subItem.authName}}</span>
@@ -41,7 +41,11 @@
         </el-menu>
       </el-aside>
 
-      <el-main>Main</el-main>
+      <el-main>
+          <!-- 路由占位符 -->
+          <!-- 路由跳转的时候只改变路由占位符部分的内容 -->
+          <router-view></router-view>
+      </el-main>
     </el-container>
   </el-container>
 </template>
@@ -61,11 +65,14 @@ export default {
         '145':'el-icon-s-marketing'
       },
       //是否折叠
-      iscollapse:false
+      iscollapse:false,
+      //被激活的链接地址
+      activePath:''
     }
   },
   created(){
     this.getMenuList()
+    this.activePath = window.sessionStorage.getItem('activePath');
   },
   methods: {
     logout() {
@@ -84,6 +91,11 @@ export default {
     //菜单折叠与展开
     toggleCollapse(){
       this.iscollapse = ! this.iscollapse;
+    },
+    // 保存链接的激活状态到SessionStorage,在每次点击或者刷新页面的时候获取并高亮对应item
+    saveNavState(activePath){
+        window.sessionStorage.setItem('activePath', activePath);
+        this.activePath = activePath;
     }
   }
 };
