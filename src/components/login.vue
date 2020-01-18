@@ -81,7 +81,6 @@ export default {
         //  1.1 除了登陆以外的其他API接口必须登录之后才能访问
         //  1.2 token只应在网站打开期间生效
         //2. 转到主页/home
-        console.log(res);
         window.sessionStorage.setItem('token',res.data.token);
         this.$router.push('/home'); //页面跳转
 
