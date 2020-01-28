@@ -7,6 +7,7 @@ import users from '../components/user/users.vue'
 import rights from '../components/power/rights.vue'
 import roles from '../components/power/roles.vue'
 import cate from '../components/goods/cate.vue'
+import params from '../components/goods/params.vue'
 import { createContext } from 'vm';
 Vue.use(Router)
 
@@ -46,6 +47,10 @@ const router = new Router({
                 {
                     path:'/categories',
                     component: cate
+                },
+                {
+                    path:'/params',
+                    component: params
                 }
             ]
         }
